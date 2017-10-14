@@ -23,11 +23,10 @@ while True:
       os.makedirs(directory)
     filename = hour + "h" + "-" + minute + "m" + ".h264"
     videoFilePath = directory + filename
-    logging.info(videoFilePath + ". Recording Time in Seconds: " + timeInSecsToRecord)
+    logging.info(videoFilePath + ". Recording Time in Seconds: " + str(timeInSecsToRecord))
     camera.start_recording(videoFilePath)
     camera.wait_recording(timeInSecsToRecord)
     camera.stop_recording()
   except Exception as e:
-  	logging.error("Error happened while recording: " + videoFilePath)
+    logging.error("Error happened while recording: " + videoFilePath)
     logging.error(traceback.format_exc())
-    # Logs the error appropriately. 
