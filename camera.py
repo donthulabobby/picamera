@@ -18,7 +18,7 @@ while True:
     hour = dateTimeNow.strftime('%H')
     minute = dateTimeNow.strftime('%M')
     timeInSecsToRecord = ((60 - int(minute)) * 60)
-    directory = "/home/pi/Desktop/picamRecordings/" + month + "/" + day + "/"
+    directory = "/var/piCamRecordings/" + month + "/" + day + "/"
     if not os.path.exists(directory):
       os.makedirs(directory)
     filename = hour + "h" + "-" + minute + "m" + ".h264"
