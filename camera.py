@@ -1,56 +1,33 @@
-from picamera import PiCamera
 import time
 import datetime
 import os
+import logging
+import traceback
+from picamera import PiCamera
 
-print "Time in seconds since the epoch: %s" %time.time()
-print "Current date and time: " , datetime.datetime.now()
-print "Or like this: " ,datetime.datetime.now().strftime("%y-%m-%d-%H-%M")
-
-print "Hour is: " , datetime.datetime.now().strftime('%H')
-print "Minute is: " , datetime.datetime.now().strftime('%M')
-
-
-
-print "Current year: ", datetime.date.today().strftime("%Y")
-print "Month of year: ", datetime.date.today().strftime("%B")
-print "Week number of the year: ", datetime.date.today().strftime("%W")
-print "Weekday of the week: ", datetime.date.today().strftime("%w")
-print "Day of year: ", datetime.date.today().strftime("%j")
-print "Day of the month : ", datetime.date.today().strftime("%d")
-print "Day of week: ", datetime.date.today().strftime("%A")
-
-todayDateTime = datetime.date.today()
-dateTimeNow = datetime.datetime.now()
-month = todayDateTime.strftime("%B")
-day = todayDateTime.strftime("%d")
-hour = dateTimeNow.strftime('%H')
-minute = dateTimeNow.strftime('%M')
-print month + day + hour + minute
-
-timeInSecsToRecord = ((60 - int(minute)) * 60)
-print timeInSecsToRecord
-#time.sleep(10)
-
-
-
+logging.basicConfig(filename='/var/log/picamera.log',level=logging.DEBUG)
 camera = PiCamera()
+camera.resolution = (1920, 1080)
 
-camera.resolution = (1280, 720)
 while True:
-#for i in range(1,11):
-  todayDateTime = datetime.date.today()
-  dateTimeNow = datetime.datetime.now()
-  month = todayDateTime.strftime("%B")
-  day = todayDateTime.strftime("%d")
-  hour = dateTimeNow.strftime('%H')
-  minute = dateTimeNow.strftime('%M')
-  timeInSecsToRecord = ((60 - int(minute)) * 60)
-  directory = "/home/pi/Desktop/testVideoDir/" + month + "/" + day + "/"
-  if not os.path.exists(directory):
-    os.makedirs(directory)
-  #camera.start_preview()
-  camera.start_recording(directory + hour + "-" + minute + ".h264")
-  camera.wait_recording(timeInSecsToRecord)
-  camera.stop_recording()
-  #camera.stop_preview()
+  try:
+    todayDateTime = datetime.date.today()
+    dateTimeNow = datetime.datetime.now()
+    month = todayDateTime.strftime("%B")
+    day = todayDateTime.strftime("%d")
+    hour = dateTimeNow.strftime('%H')
+    minute = dateTimeNow.strftime('%M')
+    timeInSecsToRecord = ((60 - int(minute)) * 60)
+    directory = "/home/pi/Desktop/picamRecordings/" + month + "/" + day + "/"
+    if not os.path.exists(directory):
+      os.makedirs(directory)
+    filename = hour + "h" + "-" + minute + "m" + ".h264"
+    videoFilePath = directory + filename
+    logging.info(videoFilePath + ". Recording Time in Seconds: " + timeInSecsToRecord)
+    camera.start_recording(videoFilePath)
+    camera.wait_recording(timeInSecsToRecord)
+    camera.stop_recording()
+  except Exception as e:
+  	logging.error("Error happened while recording: " + videoFilePath)
+    logging.error(traceback.format_exc())
+    # Logs the error appropriately. 
