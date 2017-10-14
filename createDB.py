@@ -10,7 +10,7 @@ if not os.path.exists(pifolder):
 conn = lite.connect(location)
 c = conn.cursor()
 
-sql = "create table if not exists " + table_name + " (timestamp DATETIME DEFAULT CURRENT_TIMESTAMP PRIMARY KEY, file TEXT)"
+sql = "create table if not exists " + table_name + " (timestamp DATETIME PRIMARY KEY, file TEXT)"
 c.execute(sql)
 
 #sql = "insert into " + table_name + " (file) values ('/home/pi')"

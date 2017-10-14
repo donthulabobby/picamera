@@ -10,18 +10,29 @@ logging.basicConfig(filename='/var/log/picamera.log',level=logging.DEBUG)
 camera = PiCamera()
 camera.resolution = (1296, 972)
 videoRecordingsDir = "/var/piCamRecordings/"
-historyNumDaysForRecordings = 60
+historyNumDaysForRecordings = 10
 location = "/var/pi/picam.db"
 table_name = "pi_videos"
 conn = lite.connect(location)
 cur = conn.cursor()
 
 
-def insertVideoFilePath( filePath, cursor, connection ):
-  sql = "insert into pi_videos(file) values ('hello')"
+def insertIntoTable( dateTimeNow, filePath, cursor, connection ):
+  logging.info("inserting, " + filePath + " into table " + table_name)
+  sql = "insert into " + table_name + "(timestamp, file) values (DATETIME('" + str(dateTimeNow) + "'), '" + filePath + "')"
   cursor.execute(sql)
   connection.commit()
 
+def deleteVideoFile( filePath ):
+  logging.info("deleting file, " + str(filePath))
+  os.remove(str(filePath))
+
+def deleteOldVideos( timestamp, cursor, connection ):
+  deleteTime = timestamp - datetime.timedelta(minutes=historyNumDaysForRecordings)
+  cursor.execute("SELECT file FROM " + table_name + "  WHERE timestamp < DATETIME('" + str(deleteTime) + "')")
+  rows = cur.fetchall()
+  for row in rows:
+    deleteVideoFile(row[0])
 
 while True:
   try:
@@ -37,11 +48,12 @@ while True:
       os.makedirs(directory)
     filename = hour + "h" + "-" + minute + "m" + ".h264"
     videoFilePath = directory + filename
-    insertVideoFilePath(videoFilePath, cur, conn)
+    insertIntoTable(dateTimeNow, videoFilePath, cur, conn)
     logging.info(videoFilePath + ". Recording Time in Seconds: " + str(timeInSecsToRecord))
     camera.start_recording(videoFilePath)
     camera.wait_recording(timeInSecsToRecord)
     camera.stop_recording()
+    deleteOldVideos(dateTimeNow,cur,conn)
   except Exception as e:
     logging.error("Error happened while recording: " + videoFilePath)
     logging.error(traceback.format_exc())
