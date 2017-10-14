@@ -7,7 +7,9 @@ from picamera import PiCamera
 
 logging.basicConfig(filename='/var/log/picamera.log',level=logging.DEBUG)
 camera = PiCamera()
-camera.resolution = (1920, 1080)
+camera.resolution = (1296, 972)
+videoRecordingsDir = "/var/piCamRecordings/"
+historyNumDaysForRecordings = 60
 
 while True:
   try:
@@ -18,7 +20,7 @@ while True:
     hour = dateTimeNow.strftime('%H')
     minute = dateTimeNow.strftime('%M')
     timeInSecsToRecord = ((60 - int(minute)) * 60)
-    directory = "/var/piCamRecordings/" + month + "/" + day + "/"
+    directory = videoRecordingsDir + month + "/" + day + "/"
     if not os.path.exists(directory):
       os.makedirs(directory)
     filename = hour + "h" + "-" + minute + "m" + ".h264"
