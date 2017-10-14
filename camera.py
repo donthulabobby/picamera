@@ -1,7 +1,7 @@
 from picamera import PiCamera
 import time
 import datetime
-
+import os
 
 print "Time in seconds since the epoch: %s" %time.time()
 print "Current date and time: " , datetime.datetime.now()
@@ -46,11 +46,11 @@ while True:
   hour = dateTimeNow.strftime('%H')
   minute = dateTimeNow.strftime('%M')
   timeInSecsToRecord = ((60 - int(minute)) * 60)
-  directoy = "/home/pi/Desktop/testVideoDir/" + month + "/" + day + "/"
+  directory = "/home/pi/Desktop/testVideoDir/" + month + "/" + day + "/"
   if not os.path.exists(directory):
     os.makedirs(directory)
-  camera.start_preview()
-  camera.start_recording(directoy + hour + "-" + minute + ".h264")
+  #camera.start_preview()
+  camera.start_recording(directory + hour + "-" + minute + ".h264")
   camera.wait_recording(timeInSecsToRecord)
   camera.stop_recording()
-  camera.stop_preview()
+  #camera.stop_preview()
