@@ -45,12 +45,12 @@ while True:
   day = todayDateTime.strftime("%d")
   hour = dateTimeNow.strftime('%H')
   minute = dateTimeNow.strftime('%M')
-  print month + day + hour + minute
-
   timeInSecsToRecord = ((60 - int(minute)) * 60)
-  print timeInSecsToRecord
+  directoy = "/home/pi/Desktop/testVideoDir/" + month + "/" + day + "/"
+  if not os.path.exists(directory):
+    os.makedirs(directory)
   camera.start_preview()
-  camera.start_recording("/home/pi/Desktop/testVideoDir/" + month + "/" + day + "/"+ hour + "-" + minute + ".h264")
+  camera.start_recording(directoy + hour + "-" + minute + ".h264")
   camera.wait_recording(timeInSecsToRecord)
   camera.stop_recording()
   camera.stop_preview()
