@@ -6,7 +6,7 @@ Saves an hourly video in the following location, /opt/piCamRecordings/[month]/[d
 <br />
 <br />
 
-## Usage: <br />
+### Usage: <br />
 . Run, 'sudo python camera.py &' command to start the security-cam video recording in the background.<br />
 <br />
 <br />
