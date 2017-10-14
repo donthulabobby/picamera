@@ -20,15 +20,37 @@ print "Day of year: ", datetime.date.today().strftime("%j")
 print "Day of the month : ", datetime.date.today().strftime("%d")
 print "Day of week: ", datetime.date.today().strftime("%A")
 
+todayDateTime = datetime.date.today()
+dateTimeNow = datetime.datetime.now()
+month = todayDateTime.strftime("%B")
+day = todayDateTime.strftime("%d")
+hour = dateTimeNow.strftime('%H')
+minute = dateTimeNow.strftime('%M')
+print month + day + hour + minute
+
+timeInSecsToRecord = ((60 - int(minute)) * 60)
+print timeInSecsToRecord
+#time.sleep(10)
 
 
 
 camera = PiCamera()
 
 camera.resolution = (1280, 720)
-for i in range(1,11):
+while True:
+#for i in range(1,11):
+  todayDateTime = datetime.date.today()
+  dateTimeNow = datetime.datetime.now()
+  month = todayDateTime.strftime("%B")
+  day = todayDateTime.strftime("%d")
+  hour = dateTimeNow.strftime('%H')
+  minute = dateTimeNow.strftime('%M')
+  print month + day + hour + minute
+
+  timeInSecsToRecord = ((60 - int(minute)) * 60)
+  print timeInSecsToRecord
   camera.start_preview()
-  camera.start_recording("/home/pi/Desktop/testVideoDir/" + str(i) + ".h264")
-  camera.wait_recording(2)
+  camera.start_recording("/home/pi/Desktop/testVideoDir/" + month + "/" + day + "/"+ hour + "-" + minute + ".h264")
+  camera.wait_recording(timeInSecsToRecord)
   camera.stop_recording()
   camera.stop_preview()
