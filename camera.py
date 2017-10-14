@@ -9,8 +9,8 @@ from picamera import PiCamera
 logging.basicConfig(filename='/var/log/picamera.log',level=logging.DEBUG)
 camera = PiCamera()
 camera.resolution = (1296, 972)
-videoRecordingsDir = "/var/piCamRecordings/"
-historyNumDaysForRecordings = 10
+videoRecordingsDir = "/opt/piCamRecordings/"
+historyNumDaysForRecordings = 7
 location = "/var/pi/picam.db"
 table_name = "pi_videos"
 conn = lite.connect(location)
@@ -28,7 +28,7 @@ def deleteVideoFile( filePath ):
   os.remove(str(filePath))
 
 def deleteOldVideos( timestamp, cursor, connection ):
-  deleteTime = timestamp - datetime.timedelta(minutes=historyNumDaysForRecordings)
+  deleteTime = timestamp - datetime.timedelta(days=historyNumDaysForRecordings)
   cursor.execute("SELECT file FROM " + table_name + "  WHERE timestamp < DATETIME('" + str(deleteTime) + "')")
   rows = cur.fetchall()
   for row in rows:
