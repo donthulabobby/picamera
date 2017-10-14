@@ -6,14 +6,14 @@ Saves an hourly video in the following location, /opt/piCamRecordings/[month]/[d
 <br />
 <br />
 
-Prerequisites:<br />
+## Usage: <br />
+. Run, 'sudo python camera.py &' command to start the security-cam video recording in the background.<br />
+<br />
+<br />
+
+### Prerequisites:<br />
   . Install sqlite3 <br />
   . Run, sudo python createDB.py  - this will create the require tables used by the application. <br />
-  
-<br />
-<br />
-Usage:<br />
-. Run, 'sudo python camera.py &' command to start the security-cam video recording in the background.<br />
   
 
 
