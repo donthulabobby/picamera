@@ -13,9 +13,6 @@ c = conn.cursor()
 sql = "create table if not exists " + table_name + " (timestamp DATETIME PRIMARY KEY, file TEXT)"
 c.execute(sql)
 
-#sql = "insert into " + table_name + " (file) values ('/home/pi')"
-#c.execute(sql)
-
 conn.commit()
 c.close()
 conn.close()
