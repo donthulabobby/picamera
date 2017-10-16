@@ -33,6 +33,8 @@ def deleteOldVideos( timestamp, cursor, connection ):
   rows = cur.fetchall()
   for row in rows:
     deleteVideoFile(row[0])
+  cursor.execute("DELETE FROM " + table_name + "  WHERE timestamp < DATETIME('" + str(deleteTime) + "')")
+  connection.commit()
 
 while True:
   try:
